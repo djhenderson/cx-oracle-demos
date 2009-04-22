@@ -1,0 +1,29 @@
+<h3>top_n_rows -- top N rows of query</h3>
+<pre>
+This select the first N rows of a query.  If you are looking
+for the SELECT...LIMIT clause this is it.
+
+Note that ROWNUM starts at 1 and not 0.
+</pre>
+<h3>output</h3>
+<pre>
+the first 5 tables in your schema.
+</pre>
+<h3>code <a href=top_n_rows.py>(download)</a></h3>
+<pre>
+    import sys
+    import cx_Oracle
+    connstr = sys.argv[1]
+    conn = cx_Oracle.connect(connstr)
+    curs = conn.cursor()
+
+    # the first 5 rows of the subquery
+    curs.execute("""select * from (
+                      select table_name from user_tables order by table_name
+                    ) where rownum <= 5""")
+    for r in curs:
+        print r[0]
+
+    conn.close()
+
+</pre>

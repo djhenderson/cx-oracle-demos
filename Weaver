@@ -1,0 +1,69 @@
+#!/Users/mh/stools/bin/python
+
+import glob
+import os
+
+def doblock(fd,label,text,pre=False):
+    text=text.strip()
+    if len(text) > 0:
+        if label is not None:
+            fd.write('<h3>%s</h3>\n'%(label))
+        if pre:
+            fd.write('<pre>\n')
+        fd.write('%s\n'%(text))
+        if pre:
+            fd.write('</pre>\n')
+
+
+flist=[os.path.splitext(x)[0] for x in glob.glob('*.py')]
+flist.sort()
+
+ixf=open('index.html','w')
+ixf.write('<h3>cx_Oracle Demo Programs</h3>\n')
+ixf.write('<table>\n')
+
+for f in flist:
+    m=__import__(f)
+
+    # index row
+    ixf.write(' <tr>\n')
+    ixf.write('  <td><a href=%s.html>%s</a></td>\n'%(m.__name__,m.__name__))
+    ixf.write('  <td>%s</td>\n'%(m.desc))
+    ixf.write(' </tr>\n')
+
+    # module doc
+    ht=open('%s.html'%(m.__name__),'w')
+    ht.write('<h3>%s -- %s</h3>\n'%(m.__name__,m.desc))
+
+    doblock(ht,'setup',m.setup,pre=True)
+    doblock(ht,'cleanup',m.cleanup,pre=True)
+    doblock(ht,None,m.notes,pre=True)
+    doblock(ht,'output',m.output,pre=True)
+
+    doprint=0
+    fd=open(f+'.py')
+    ht.write('<h3>code <a href=%s.py>(download)</a></h3>\n'%(m.__name__))
+    ht.write('<pre>\n')
+    for line in fd:
+        if line == "if __name__ == '__main__':\n":
+            doprint=0
+        if doprint:
+            ht.write(line)
+        if line == 'def demo():\n':
+            doprint=1
+    ht.write('</pre>\n')
+
+    ht.close()
+
+ixf.write('</table>\n')
+
+ixf.write("""
+<p>
+This is an open-source project.  To contribute or grab the source, go to:
+<br>
+<a href=http://code.google.com/p/cx-oracle-demos/>
+http://code.google.com/p/cx-oracle-demos</a>
+
+""")
+
+ixf.close()
