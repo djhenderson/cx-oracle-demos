@@ -20,7 +20,7 @@ print r
 conn.close()
 
 # don't use these, these are special case constructs
-#connstr = "templar/oracle@tmpltest1"
-#connstr = "templar/oracle@tmpltest2"
-#connstr = "templar/oracle@//templardb01:1521/tmpltest"
-#connstr = "templar/oracle@//templardb02:1521/tmpltest"
+#connstr = ""
+#connstr = ""
+#connstr = ""
+#connstr = ""

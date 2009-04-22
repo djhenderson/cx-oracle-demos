@@ -2,7 +2,7 @@
 
 import cx_Oracle
 
-connstr = "templar/oracle@tmpltest"
+connstr = ""
 conn = cx_Oracle.connect(connstr)
 curs = conn.cursor()
 curs.execute('select 2+2 "aaa" ,3*3 from dual')

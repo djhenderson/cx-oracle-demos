@@ -2,7 +2,7 @@
 
 import cx_Oracle
 
-connstr = "templar/oracle@templar"
+connstr = ""
 conn = cx_Oracle.connect(connstr)
 curs = conn.cursor()
 #curs.execute("select get_thumbnail_seq(5,'queued') from dual")

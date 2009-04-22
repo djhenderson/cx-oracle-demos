@@ -24,7 +24,7 @@ class MyCursor(cx_Oracle.Cursor):
 
 cx_Oracle.connect = MyConnection
 
-conn = cx_Oracle.connect('templar/oracle@templardb01.pixar.com/tmpltest')
+conn = cx_Oracle.connect(foo)
 cursor = conn.cursor()
 cursor.execute('select 2+2 from '
                ' dual')

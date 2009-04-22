@@ -7,7 +7,7 @@ try:
 except NameError:
     pass
 
-connurl = "templar/oracle@tmpltest"
+connurl = ""
 conn = cx_Oracle.connect(connurl)
 cursor = conn.cursor()
 cursor.execute('select 2+2 from dual')

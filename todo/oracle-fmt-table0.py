@@ -63,7 +63,7 @@ def pgprint(desc,rows):
             i += 1
         sys.stdout.write('\n')
 
-conn = cx_Oracle.connect("templar/oracle@tmpltest")
+conn = cx_Oracle.connect("")
 curs = conn.cursor()
 
 #curs.execute("select sid,username,serial#,audsid,schemaname,to_char(logon_time,'DD-MON-YY HH24:MI:SS'),osuser,process,machine,terminal,program,event,service_name from v$session")

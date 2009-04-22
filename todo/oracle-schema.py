@@ -2,7 +2,7 @@
 
 import cx_Oracle
 
-connurl = "templar/oracle@//templardb01/tmpltest"
+connurl = ""
 conn = cx_Oracle.connect(connurl)
 curs = conn.cursor()
 
