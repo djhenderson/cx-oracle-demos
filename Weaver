@@ -23,6 +23,7 @@ ixf.write('<h3>cx_Oracle Demo Programs</h3>\n')
 ixf.write('<table>\n')
 
 for f in flist:
+    print '***',f
     m=__import__(f)
 
     # index row
@@ -33,12 +34,7 @@ for f in flist:
 
     # module doc
     ht=open('%s.html'%(m.__name__),'w')
-    ht.write('<h3>%s -- %s</h3>\n'%(m.__name__,m.desc))
-
-    doblock(ht,'setup',m.setup,pre=True)
-    doblock(ht,'cleanup',m.cleanup,pre=True)
-    doblock(ht,None,m.notes,pre=True)
-    doblock(ht,'output',m.output,pre=True)
+    ht.write('<h3>%s</h3>\n'%(m.desc))
 
     doprint=0
     fd=open(f+'.py')
@@ -53,6 +49,11 @@ for f in flist:
             doprint=1
     ht.write('</pre>\n')
 
+    doblock(ht,'notes',m.notes,pre=True)
+    doblock(ht,'setup',m.setup,pre=True)
+    doblock(ht,'cleanup',m.cleanup,pre=True)
+    doblock(ht,'output',m.output,pre=True)
+
     ht.close()
 
 ixf.write('</table>\n')
@@ -63,7 +64,10 @@ This is an open-source project.  To contribute or grab the source, go to:
 <br>
 <a href=http://code.google.com/p/cx-oracle-demos/>
 http://code.google.com/p/cx-oracle-demos</a>
-
+<p>
+Look in the todo/ directory to see some of the works in progress.
+<p>
+Here's the code template: <a href=Template.txt>Template.txt</a>
 """)
 
 ixf.close()
