@@ -1,8 +1,0 @@
-#!/bin/sh
-# kill a specified oracle session
-
-sid=$1; ser=$2; inst=$3
-echo -n sys password:
-stty -echo; read pass; stty echo
-echo "alter system kill session '$sid,$ser';"|
-     sqlplus -SL sys/$pass@$inst as sysdba
