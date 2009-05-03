@@ -1,0 +1,30 @@
+#!python
+
+desc="""ONE-LINER DESCRIPTION"""
+
+setup="""
+"""
+
+cleanup="""
+"""
+
+notes="""
+NOTES AND EXPLANTION
+"""
+
+output="""
+"""
+
+def demo():
+    import sys
+    import cx_Oracle
+    connstr = sys.argv[1]
+    conn = cx_Oracle.connect(connstr)
+    curs = conn.cursor()
+
+    # STUFF GOES HERE
+
+    conn.close()
+
+if __name__ == '__main__':
+    demo()
