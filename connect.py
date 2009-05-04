@@ -1,4 +1,7 @@
-#!/usr/anim/bin/pypix
+#-----------------------------------------------------------------------
+# this file is part of the cx-oracle-demo package.
+# http://code.google.com/p/cx-oracle-demos
+#-----------------------------------------------------------------------
 
 desc="""several flavors of connect"""
 

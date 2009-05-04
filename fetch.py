@@ -1,4 +1,8 @@
-#!/usr/anim/bin/pypix
+#-----------------------------------------------------------------------
+# this file is part of the cx-oracle-demo package.
+# http://code.google.com/p/cx-oracle-demos
+#-----------------------------------------------------------------------
+
 desc="""several flavors of connect"""
 
 setup="""
@@ -27,12 +31,12 @@ def demo():
 
     #-- iterating over a cursor
     #-- best way to loop over a results set
-    curs.execute('select table_name,tablespace_name from user_tables')
+    curs.execute('select a,b from t1')
     for row in curs:
         print row
 
     #-- fetch all rows in one call
-    curs.execute('select table_name,tablespace_name from user_tables')
+    curs.execute('select a,b from t1')
     print curs.fetchall()
 
     conn.close()

@@ -60,6 +60,14 @@ ixf.write('</table>\n')
 
 ixf.write("""
 <p>
+These demos reference a table t1, procedures p0 and p2, and
+functions f0 and f2.  Here's the sql to prep and clean up your
+environment:
+<ul>
+<li><a href=setup.sql>setup.sql</a>
+<li><a href=cleanup.sql>cleanup.sql</a>
+</ul>
+<p>
 This is an open-source project.  To contribute or grab the source, go to:
 <br>
 <a href=http://code.google.com/p/cx-oracle-demos/>

@@ -1,27 +1,14 @@
-#!/usr/anim/bin/pypix
+#-----------------------------------------------------------------------
+# this file is part of the cx-oracle-demo package.
+# http://code.google.com/p/cx-oracle-demos
+#-----------------------------------------------------------------------
 
 desc="""calling a stored procedure"""
 
 setup="""
-
-create table mytable (x number, y date);
-create or replace procedure myproc_noparm
-as
-begin
-    insert into mytable(x, y) values (99,sysdate);
-end;
-/
-create or replace procedure myproc_1parm(ax number)
-as
-begin
-    insert into mytable(x, y) values (ax,sysdate);
-end;
 """
 
 cleanup="""
-drop table mytable;
-drop procedure myproc_noparm;
-drop procedure myproc_1parm;
 """
 
 notes="""
@@ -43,8 +30,6 @@ also do a commit (but that is generally a bad practice).
 """
 
 output="""
-(99, datetime.datetime(2009, 5, 1, 22, 24, 55))
-(55, datetime.datetime(2009, 5, 1, 22, 24, 55))
 """
 
 def demo():
@@ -54,11 +39,8 @@ def demo():
     conn = cx_Oracle.connect(connstr)
     curs = conn.cursor()
 
-    curs.callproc('myproc_noparm')
-    curs.callproc('myproc_1parm', [55])
-    curs.execute('select * from mytable')
-    for r in curs:
-        print r
+    curs.callproc('p0')
+    curs.callproc('p2', [55, 66])
 
     conn.commit()
     conn.close()

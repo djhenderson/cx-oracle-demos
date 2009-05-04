@@ -1,29 +1,14 @@
-#!/usr/anim/bin/pypix
+#-----------------------------------------------------------------------
+# this file is part of the cx-oracle-demo package.
+# http://code.google.com/p/cx-oracle-demos
+#-----------------------------------------------------------------------
 
 desc="""calling a function"""
 
 setup="""
-create or replace function current_time return date
-as
-begin
-    declare
-        x date;
-    begin
-        select sysdate into x from dual;
-        return x;
-    end;
-end;
-
-create or replace function add_three(x number, y number, z number))
-as
-begin
-    return x + y + z;
-end;
 """
 
 cleanup="""
-drop function current_time;
-drop function add_three;
 """
 
 notes="""
@@ -45,8 +30,6 @@ also do a commit (but that is generally a bad practice).
 """
 
 output="""
-2009-05-01 22:30:33
-6.0
 """
 
 def demo():
@@ -56,12 +39,11 @@ def demo():
     conn = cx_Oracle.connect(connstr)
     curs = conn.cursor()
 
-    now = curs.callfunc('current_time', cx_Oracle.DATETIME)
+    now = curs.callfunc('f0', cx_Oracle.NUMBER)
     print now
-    sum = curs.callfunc('add_three', cx_Oracle.NUMBER, [1,2,3])
+    sum = curs.callfunc('f2', cx_Oracle.NUMBER, [1,2])
     print sum
 
-    conn.commit()
     conn.close()
 
 if __name__ == '__main__':

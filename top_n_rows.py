@@ -1,4 +1,7 @@
-#!/usr/anim/bin/pypix
+#-----------------------------------------------------------------------
+# this file is part of the cx-oracle-demo package.
+# http://code.google.com/p/cx-oracle-demos
+#-----------------------------------------------------------------------
 
 desc="""top N rows of query"""
 
@@ -16,7 +19,6 @@ Note that ROWNUM starts at 1 and not 0.
 """
 
 output="""
-the first 5 tables in your schema.
 """
 
 def demo():
@@ -28,7 +30,7 @@ def demo():
 
     # the first 5 rows of the subquery
     curs.execute("""select * from (
-                      select table_name from user_tables order by table_name
+                      select a,b from t1 order by a
                     ) where rownum <= 5""")
     for r in curs:
         print r[0]
