@@ -20,9 +20,9 @@ notes="""
 To create a blob object, use curs.var(cx_Oracle.BLOB).  To set
 data into the blob, use b.setvalue(offset,data).  Use setinputsizes
 to tell cx_Oracle the incoming parameter is a blob.
-
+<p>
 blob operations:  copy(), setvalue(offset, data), getvalue(offset=0)
-
+<p>
 Note that printing the blob will call its str() function.
 """
 
@@ -34,13 +34,10 @@ Look at the table data in sql developer, double click the blobs,
 select 'view as image' and you will see a smiley face.
 """
 
-def demo():
-    import sys
-    import cx_Oracle
-    connstr = sys.argv[1]
-    conn = cx_Oracle.connect(connstr)
-    curs = conn.cursor()
+import sys
+import cx_Oracle
 
+def demo(conn,curs):
     curs.execute('delete from blobtest')
 
     # these are the bytes of a 32x32 GIF image
@@ -72,14 +69,14 @@ def demo():
     myblob2.write(chunk1)
     myblob2.write(chunk2,41)
 
-    conn.commit()
-
     # fetch results.
     curs.execute('select a,b from blobtest')
     for (a,b) in curs:
         print a, type(b), b
 
-    conn.close()
-
 if __name__ == '__main__':
-    demo()
+    connstr = sys.argv[1]
+    conn = cx_Oracle.connect(connstr)
+    curs = conn.cursor()
+    demo(conn,curs)
+    conn.close()

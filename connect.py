@@ -19,19 +19,22 @@ two basic objects you will use.  SYSDBA is needed for system accounts.
 output="""
 """
 
-def demo():
-    import sys
-    import cx_Oracle
-    connstr = sys.argv[1]  # e.g., scott/tiger@orcl
+import sys
+import cx_Oracle
 
-    # connect to the database and get a cursor
+def demo(conn,curs):
+    # normal user connect -- connstr looks like scott/tiger@orcl
     conn = cx_Oracle.connect(connstr)
-    curs = conn.cursor()
-    conn.close()
+
+    # normal user connect, three parms
+    conn = cx_Oracle.connect('scott', 'tiger', 'orcl')
 
     # connect to the database as sysdba
     conn = cx_Oracle.connect('sys/secret@mydb', mode=cx_Oracle.SYSDBA)
-    conn.close()
 
 if __name__ == '__main__':
-    demo()
+    connstr = sys.argv[1]
+    conn = cx_Oracle.connect(connstr)
+    curs = conn.cursor()
+    demo(conn,curs)
+    conn.close()

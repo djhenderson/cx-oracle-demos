@@ -1,0 +1,22 @@
+h1 {
+    font-family: arial, helvetica;
+    font-size: 1.2em;
+}
+h2 {
+    font-family: arial, helvetica;
+    font-size: 1.1em;
+}
+li,p  {
+    font-family: arial, helvetica;
+    width: 70%;
+    margin-left: 3%;
+}
+p.footer  {
+    margin-left: 0%;
+}
+pre {
+    font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    font-size: .8em;
+    margin-left: 5%;
+    background-color: #f0f0f0;
+}

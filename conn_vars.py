@@ -13,25 +13,31 @@ cleanup="""
 
 notes="""
 These are the instance variables associated with a connection.
-
+<p>
 R/O
-dsn		TNS entry of the current connection.
-encoding	IANA character set name of the current connection.
-maxBytesPerCharacter	maximum number of bytes per character.
-nencoding	the IANA character set name of the current connection.
-tnsentry	TNS entry of the current connection. ??how does it differ??
-username	connection's username
-version		version of oracle you are connected to.
-
+<ul>
+<li>dsn		TNS entry of the current connection.
+<li>encoding	IANA character set name of the current connection.
+<li>maxBytesPerCharacter	maximum number of bytes per character.
+<li>nencoding	the IANA character set name of the current connection.
+<li>tnsentry	TNS entry of the current connection. ??how does it differ??
+<li>username	connection's username
+<li>version		version of oracle you are connected to.
+</ul>
+<p>
 R/W
-current_schema	sets the current schema for the session.
-password	password of the current connection
-stmtcachesize	size of the statement cache
-
+<ul>
+<li>current_schema	sets the current schema for the session.
+<li>password	password of the current connection
+<li>stmtcachesize	size of the statement cache
+</ul>
+<p>
 W/O
-action		sets [g]v$session.action
-clientinfo	sets [g]v$session.client_info
-module		sets [g]v$session.module
+<ul>
+<li>action		sets [g]v$session.action
+<li>clientinfo	sets [g]v$session.client_info
+<li>module		sets [g]v$session.module
+</ul>
 """
 
 output="""
@@ -50,12 +56,10 @@ current_schema =
 Write-Only:
 """
 
-def demo():
-    import sys
-    import cx_Oracle
-    connstr = sys.argv[1]
-    conn = cx_Oracle.connect(connstr)
+import sys
+import cx_Oracle
 
+def demo(conn,curs):
     print "Read-Only:"
     print "                 dsn =", conn.dsn
     print "            encoding =", conn.encoding
@@ -78,8 +82,9 @@ def demo():
     conn.module = "mymodule"
     conn.commit() # to be visible to other processes
 
-    conn.close()
-
-
 if __name__ == '__main__':
-    demo()
+    connstr = sys.argv[1]
+    conn = cx_Oracle.connect(connstr)
+    curs = conn.cursor()
+    demo(conn,curs)
+    conn.close()

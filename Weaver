@@ -2,24 +2,66 @@
 
 import glob
 import os
+import inspect
 
-def doblock(fd,label,text,pre=False):
+module_head="""<head>
+<link rel="stylesheet" type="text/css" href="cx-oracle-demos.css" />
+</head>
+<body>
+<html>
+"""
+
+module_tail="""
+<p class=footer>
+<a href=index.html>index</a> -
+<a href=http://code.google.com/p/cx-oracle-demos>home</a> -
+<a href=http://cx-oracle.sourceforge.net/html/index.html>cx_Oracle</a>
+
+</html>
+</body>
+"""
+idx_head="""
+<h1>cx_Oracle Demo Project</h1>
+<p>This is a collection of cx_Oracle demo programs.
+<p>
+"""
+
+idx_tail="""
+<p>
+These demos reference the following database objects:
+<ul>
+<li>table cxdemo_t1
+<li>package cxdemo
+</ul>
+<p>
+which are defined here:
+<ul>
+<li><a href=setup.sql>setup.sql</a>
+<li><a href=cleanup.sql>cleanup.sql</a>
+</ul>
+<p>
+This is an open-source project.  To contribute or grab the source, go to:
+<ul>
+<li><a href=http://code.google.com/p/cx-oracle-demos/>
+http://code.google.com/p/cx-oracle-demos</a>
+</ul>
+<p>
+Here's the code template: <a href=Template.txt>Template.txt</a>
+"""
+
+def doblock(fd,label,text,tag):
     text=text.strip()
     if len(text) > 0:
         if label is not None:
-            fd.write('<h3>%s</h3>\n'%(label))
-        if pre:
-            fd.write('<pre>\n')
-        fd.write('%s\n'%(text))
-        if pre:
-            fd.write('</pre>\n')
-
+            fd.write('<h2>%s</h2>\n'%(label))
+        fd.write('<%s>%s</%s>\n'%(tag,text,tag))
 
 flist=[os.path.splitext(x)[0] for x in glob.glob('*.py')]
 flist.sort()
 
 ixf=open('index.html','w')
-ixf.write('<h3>cx_Oracle Demo Programs</h3>\n')
+ixf.write(module_head)
+ixf.write(idx_head)
 ixf.write('<table>\n')
 
 for f in flist:
@@ -28,54 +70,35 @@ for f in flist:
 
     # index row
     ixf.write(' <tr>\n')
-    ixf.write('  <td><a href=%s.html>%s</a></td>\n'%(m.__name__,m.__name__))
-    ixf.write('  <td>%s</td>\n'%(m.desc))
+    ixf.write('  <td><p><a href=%s.html>%s</a></td>\n'%(m.__name__,m.__name__))
+    ixf.write('  <td><p>%s</td>\n'%(m.desc))
     ixf.write(' </tr>\n')
 
     # module doc
     ht=open('%s.html'%(m.__name__),'w')
-    ht.write('<h3>%s</h3>\n'%(m.desc))
+    ht.write(module_head)
+    ht.write('<h1>%s</h1>\n'%(m.desc))
 
-    doprint=0
-    fd=open(f+'.py')
-    ht.write('<h3>code <a href=%s.py>(download)</a></h3>\n'%(m.__name__))
-    ht.write('<pre>\n')
-    for line in fd:
-        if line == "if __name__ == '__main__':\n":
-            doprint=0
-        if doprint:
-            ht.write(line)
-        if line == 'def demo():\n':
-            doprint=1
-    ht.write('</pre>\n')
+    doblock(ht,None,m.notes,'p')
 
-    doblock(ht,'notes',m.notes,pre=True)
-    doblock(ht,'setup',m.setup,pre=True)
-    doblock(ht,'cleanup',m.cleanup,pre=True)
-    doblock(ht,'output',m.output,pre=True)
+    # demo() code
+    body=inspect.getsource(m.demo)
+    body=body.strip()
+    body=body.replace('\n    ','\n')
+    ix=body.index('\n')
+    body=body[ix+1:]
+    ht.write('<pre>%s</pre>\n'%(body))
+    ht.write('<p><a href=%s.py>(%s.py)</a>\n'%(m.__name__,m.__name__))
 
+    doblock(ht,'output',m.output,'pre')
+    doblock(ht,'setup',m.setup,'pre')
+    doblock(ht,'cleanup',m.cleanup,'pre')
+
+    ht.write(module_tail)
     ht.close()
 
 ixf.write('</table>\n')
 
-ixf.write("""
-<p>
-These demos reference a table t1, procedures p0 and p2, and
-functions f0 and f2.  Here's the sql to prep and clean up your
-environment:
-<ul>
-<li><a href=setup.sql>setup.sql</a>
-<li><a href=cleanup.sql>cleanup.sql</a>
-</ul>
-<p>
-This is an open-source project.  To contribute or grab the source, go to:
-<br>
-<a href=http://code.google.com/p/cx-oracle-demos/>
-http://code.google.com/p/cx-oracle-demos</a>
-<p>
-Look in the todo/ directory to see some of the works in progress.
-<p>
-Here's the code template: <a href=Template.txt>Template.txt</a>
-""")
-
+ixf.write(idx_tail)
+ixf.write(module_tail)
 ixf.close()

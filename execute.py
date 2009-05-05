@@ -16,15 +16,18 @@ There are several ways to call curs.execute().  The simplest way
 is to pass a simple sql string.  You can also use "bind variables"
 to pass in values.  This is almost always better than catting a
 bunch of strings together.
-
+<p>
 In some cases (for example using table names) you can't pass a
 table name in as a bind variable.  In order to avoid SQL injection
 attacks there's a demo of how to clean that up.
-
+<p>
+curs.description describes the data being returned.
+<p>
 The "dual" table is a pseudo-table that is used to get computed values.
 """
 
 output="""
+[('2+2', <type 'cx_Oracle.NUMBER'>, 127, 2, 0, 0, 1)]
 4                  (simple)
 8                  (positional parameter)
 10                 (named parameter)
@@ -34,15 +37,13 @@ hello world's      (apostrophe)
 9
 """
 
-def demo():
-    import sys
-    import cx_Oracle
-    connstr = sys.argv[1]  # e.g., scott/tiger@orcl
-    conn = cx_Oracle.connect(connstr)
-    curs = conn.cursor()
+import sys
+import cx_Oracle
 
+def demo(conn,curs):
     # simple execute
     curs.execute('select 2+2 from dual')
+    print curs.description
     print curs.fetchone()[0]
 
     # execute with positional parameter :1=first, :2=second, etc
@@ -58,15 +59,11 @@ def demo():
     curs.execute('select :x from dual', x="hello world's")
     print curs.fetchone()[0]
 
-    # returning value of select
-    (a1,a2)=curs.execute('select 2*:x,3*:x from dual',x=3)
-    print curs.fetchone()
-    print a1.getvalue()
-    print a2.getvalue()
-
     # select into???
 
-    conn.close()
-
 if __name__ == '__main__':
-    demo()
+    connstr = sys.argv[1]
+    conn = cx_Oracle.connect(connstr)
+    curs = conn.cursor()
+    demo(conn,curs)
+    conn.close()

@@ -18,16 +18,15 @@ NOTES AND EXPLANTION
 output="""
 """
 
-def demo():
-    import sys
-    import cx_Oracle
+import sys
+import cx_Oracle
+
+def demo(conn,curs):
+    # STUFF GOES HERE
+
+if __name__ == '__main__':
     connstr = sys.argv[1]
     conn = cx_Oracle.connect(connstr)
     curs = conn.cursor()
-
-    # STUFF GOES HERE
-
+    demo(conn,curs)
     conn.close()
-
-if __name__ == '__main__':
-    demo()
